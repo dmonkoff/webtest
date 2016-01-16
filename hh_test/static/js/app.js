@@ -21,7 +21,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "static/partials/users.html",
             controller: ['$scope', '$http',
                 function( $scope,   $http) {
-
+					$scope.selectedUser = null;
                     $scope.users = [];
                     $http.get('/api/v1/user/').success(function(data) {
                         $scope.users = data.objects;
@@ -48,8 +48,10 @@ app.config(function($stateProvider, $urlRouterProvider){
 //                    })
 
                             $scope.selectedUser = {};
+                            $scope.$parent.selectedUser = null;
                             $http.get('/api/v1/user/'+$stateParams.userId+'/').success(function(data) {
                                 $scope.selectedUser = data;
+                                $scope.$parent.selectedUser = $scope.selectedUser
                             }).error(function(data, status, headers, config) {
                             if(status=401){
                                 window.location = '/admin'
